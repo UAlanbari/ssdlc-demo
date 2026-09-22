@@ -1,0 +1,32 @@
+name: Calidad SSDLC
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  comprobar:
+    name: Calidad SSDLC
+    runs-on: ubuntu-latest
+    steps:
+      - name: Obtener código
+        uses: actions/checkout@v4
+      - name: Preparar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - name: Instalar dependencias bloqueadas
+        run: npm ci
+      - name: Analizar código
+        run: npm run lint
+      - name: Ejecutar pruebas
+        run: npm test
+      - name: Auditar dependencias
+        run: npm run audit

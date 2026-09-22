@@ -1,55 +1,41 @@
-# Guía del alumnado
+# Guía del alumnado — práctica de 3 horas
 
-## Contexto
+## Contexto y objetivo
 
-Sois el equipo que mantiene una API de tareas para un centro educativo. Contiene cuentas, tareas privadas y una ruta de estado. La dirección exige que los cambios pasen controles de seguridad antes de llegar a producción.
+Sois el equipo que mantiene una API de tareas para un centro educativo. Trabajad en parejas durante **un máximo de 3 horas**. El objetivo es aplicar una mejora pequeña, demostrar que está probada y ver cómo GitHub Actions comprueba la entrega.
 
-Trabajad en equipos de 2–3 personas y entregad los artefactos indicados. El objetivo no es "marcar casillas": cada decisión debe poder justificarse con un riesgo y una evidencia.
+El riesgo central es que una persona pueda leer o modificar la tarea de otra. La API ya incluye una defensa frente a ese riesgo; debéis localizarla y aseguraros de no romperla.
 
-## Sesión 1 — Requisitos y diseño (90 min)
+## Bloque 1 — Entender el riesgo (30 min)
 
-1. Leed [REQUISITOS.md](REQUISITOS.md) y transformad cada requisito de seguridad en criterios de aceptación comprobables.
-2. Completad el modelo de amenazas de [MODELO_AMENAZAS.md]. Elegid tres amenazas prioritarias y proponed un control para cada una.
-3. Abrid una incidencia por amenaza prioritaria: título, impacto, probabilidad, solución y prueba que demostrará el arreglo.
+1. Leed [REQUISITOS.md](REQUISITOS.md).
+2. En [MODELO_AMENAZAS.md](MODELO_AMENAZAS.md), completad solamente la fila de acceso a tarea ajena: impacto, control y prueba.
+3. Cread una incidencia breve o un archivo `RIESGO.md`: qué puede ocurrir, cómo lo evitáis y cómo demostraréis que funciona. Máximo media página.
 
-**Entrega:** criterios de aceptación, diagrama de flujo de datos sencillo y registro de riesgos.
+## Bloque 2 — Cambio y prueba (90 min)
 
-## Sesión 2 — Implementación segura (90 min)
+1. Instalad dependencias y arrancad el servicio siguiendo el [README](../README.md).
+2. Revisad `src/app.js` y localizad la comprobación que impide modificar una tarea ajena.
+3. Añadid a las tareas el campo `priority`, con los valores permitidos `low`, `medium` o `high`.
+4. Añadid dos pruebas: una que acepte un valor válido y otra que rechace un valor incorrecto.
 
-1. Instalad dependencias y arrancad el servicio como se indica en el [README](../README.md).
-2. Revisad `src/app.js`. Localizad dónde se aplican los controles de autenticación, autorización, validación y tratamiento de errores.
-3. Implementad una mejora asignada por el docente (por ejemplo, expiración de sesión, límite de datos, auditoría estructurada o un nuevo rol) sin reducir los controles existentes.
-4. Añadid pruebas antes o junto al cambio.
+**Regla:** el cambio no puede reducir los controles existentes ni las pruebas que ya pasan.
 
-**Regla:** no se aceptan cambios de seguridad sin una prueba automatizada asociada.
-
-## Sesión 3 — Verificación y cadena de suministro (90 min)
+## Bloque 3 — Verificación y GitHub Actions (60 min)
 
 Ejecutad:
 
 ```bash
-npm run lint
-npm test
-npm run audit
+npm run check
 ```
 
-Documentad el resultado de cada mandato: fecha, versión de herramienta, resultado, decisión y evidencia (salida o captura). Ejecutad también Semgrep y Gitleaks siguiendo [HERRAMIENTAS.md](HERRAMIENTAS.md).
-
-Para cada hallazgo, clasificadlo como falso positivo, aceptado temporalmente o corregido. Una aceptación temporal necesita responsable y fecha de revisión.
-
-## Sesión 4 — Entrega y operación (60 min)
-
-1. Construid y ejecutad la imagen: `npm run docker:build` y `npm run docker:run`.
-2. Verificad desde fuera del contenedor `GET /health` y una operación autenticada.
-3. Cumplimentad la lista de [OPERACION.md](OPERACION.md).
-4. Haced una revisión cruzada de otro equipo usando la rúbrica resumida.
+Subid el cambio a una rama y abrid un pull request hacia `main`. Seguid [GITHUB_ACTIONS.md](GITHUB_ACTIONS.md): el workflow **Calidad SSDLC** debe quedar en verde.
 
 ## Entrega final
 
-- Enlace al repositorio con historial de commits comprensible.
-- Carpeta `evidencias/` con resultados de calidad/seguridad y decisiones de hallazgos.
-- Modelo de amenazas actualizado.
-- Pull request con descripción, pruebas y revisión por pares.
-- Demo de 5 minutos: riesgo → control → prueba → resultado.
+- Enlace al pull request.
+- Cambio de `priority` y sus dos pruebas.
+- `RIESGO.md` o incidencia breve.
+- Captura o enlace de GitHub Actions en verde.
 
 No incluyáis contraseñas, tokens ni ficheros `.env` en la entrega.

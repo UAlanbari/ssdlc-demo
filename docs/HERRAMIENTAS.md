@@ -1,39 +1,12 @@
-# Herramientas de calidad y seguridad
+# Herramientas de la práctica
 
-## Base (npm)
+| Herramienta | Uso | Comando |
+|---|---|---|
+| ESLint | Revisa errores de código | `npm run lint` |
+| Vitest/Supertest | Ejecuta las pruebas | `npm test` |
+| npm audit | Busca vulnerabilidades conocidas | `npm run audit` |
+| GitHub Actions | Repite las tres comprobaciones en GitHub | Pull request |
 
-| Herramienta | Uso | Comando | Qué guardar como evidencia |
-|---|---|---|---|
-| ESLint | Errores y convenciones | `npm run lint` | Salida y correcciones aplicadas |
-| Vitest/Supertest | Comportamiento y regresiones | `npm test` | Salida y pruebas nuevas |
-| npm audit | CVE de dependencias | `npm run audit` | Severidad, paquete y decisión |
+Para comprobar todo en local, ejecutad `npm run check`. El pipeline de GitHub Actions usa los mismos comandos; los detalles para activarlo están en [GITHUB_ACTIONS.md](GITHUB_ACTIONS.md).
 
-Actualizad dependencias de forma deliberada: revisad cambios, ejecutad pruebas y documentad cualquier excepción. No uséis `npm audit fix --force` sin revisión.
-
-## Análisis estático con Semgrep (Docker)
-
-No requiere instalación local:
-
-```bash
-docker run --rm -v "$PWD:/src" returntocorp/semgrep semgrep --config p/javascript /src
-```
-
-Revisad cada resultado en contexto. Un resultado no es una vulnerabilidad confirmada hasta que se reproduce o se justifica técnicamente.
-
-## Detección de secretos con Gitleaks (Docker)
-
-```bash
-docker run --rm -v "$PWD:/repo" zricethezav/gitleaks:latest detect --source=/repo --no-git
-```
-
-Si aparece un secreto real, revocadlo y sustituidlo: borrarlo de un archivo no basta si ya se publicó en el historial.
-
-## Análisis de imagen
-
-Tras `npm run docker:build`, si se dispone de Trivy:
-
-```bash
-trivy image practica-ssdlc:local
-```
-
-El Dockerfile usa una imagen Alpine, dependencias de producción y el usuario no privilegiado `node`. Verificad que esos controles continúan presentes tras cada modificación.
+Docker, Semgrep, Gitleaks y Trivy son útiles en proyectos mayores, pero se han excluido de esta versión para mantenerla realizable en tres horas.
