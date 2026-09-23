@@ -1,5 +1,6 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
+node_modules/*
 node_modules/
 coverage/
 .env
@@ -80,6 +81,8 @@ target/
 
 # Jupyter Notebook
 .ipynb_checkpoints
+
+node_modules/
 
 # IPython
 profile_default/
