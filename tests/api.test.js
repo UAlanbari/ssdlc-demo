@@ -46,4 +46,27 @@ describe('API segura de tareas', () => {
     const token = await registerAndLogin(testApp, 'validacion@example.test');
     await request(testApp).post('/api/tasks').set('Authorization', `Bearer ${token}`).send({ title: 'Prueba', ownerId: '2' }).expect(400);
   });
+
+  it('debería crear una tarea con prioridad high correctamente', async () => {
+    const testApp = app();
+    const token = await registerAndLogin(testApp, 'prioridad1@example.test');
+    const res = await request(testApp)
+      .post('/api/tasks')
+      .set('Authorization', `Bearer ${token}`)
+      .send({ title: 'Tarea importante', priority: 'high' });
+    
+    expect(res.status).toBe(201);
+    expect(res.body.priority).toBe('high');
+  });
+
+  it('debería rechazar una prioridad no válida con código 400', async () => {
+    const testApp = app();
+    const token = await registerAndLogin(testApp, 'prioridad2@example.test');
+    const res = await request(testApp)
+      .post('/api/tasks')
+      .set('Authorization', `Bearer ${token}`)
+      .send({ title: 'Tarea errónea', priority: 'urgente' });
+    
+    expect(res.status).toBe(400);
+  });
 });

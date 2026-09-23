@@ -12,8 +12,8 @@ export function createStore() {
       return user;
     },
     findUserByEmail(email) { return users.find((user) => user.email === email); },
-    addTask({ ownerId, title, description }) {
-      const task = { id: String(nextTaskId++), ownerId, title, description, done: false };
+    addTask({ ownerId, title, description, priority }) {
+      const task = { id: String(nextTaskId++), ownerId, title, description, done: false, priority };
       tasks.push(task);
       return task;
     },
