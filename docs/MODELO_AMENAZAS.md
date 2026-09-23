@@ -1,32 +1,19 @@
-# Modelo de amenazas (plantilla STRIDE ligera)
+# Modelo de amenazas: una única situación
 
-## Activos que proteger
+Un modelo de amenazas sirve para pensar qué podría salir mal antes de modificar el código. En una práctica corta no vamos a analizar toda la aplicación: nos centraremos en la propiedad de una tarea.
 
-- Credenciales y hashes de contraseña.
-- Token de sesión.
-- Propiedad y contenido de las tareas.
-- Disponibilidad básica de la API.
-- Secretos de configuración.
+## Situación a analizar
 
-## Flujo de datos
+Ana y Bruno tienen cuentas distintas. Ana crea una tarea que recibe el identificador `1`. Bruno intenta enviar una petición para modificar la tarea `1` usando su propio token.
 
-```text
-Navegador/cliente --HTTPS--> API Express --memoria (laboratorio)
-                       |             |
-                       +--> JWT <----+-- secreto de entorno
-```
+| Pregunta | Respuesta esperada |
+|---|---|
+| ¿Qué activo se protege? | El contenido y el estado de las tareas de cada persona. |
+| ¿Qué podría salir mal? | Bruno podría leer, modificar o borrar la tarea de Ana. |
+| ¿Qué impacto tendría? | Pérdida de privacidad e integridad de la información. |
+| ¿Qué control existe? | La API compara el propietario guardado con la persona autenticada. |
+| ¿Cómo se comprueba? | Una prueba crea dos usuarios; Bruno recibe `404` al intentar cambiar la tarea de Ana. |
 
-## Tabla inicial
+## Vuestra tarea
 
-| Amenaza | Categoría | Ejemplo de impacto | Control inicial | Evidencia esperada |
-|---|---|---|---|---|
-| Suplantación de identidad | Spoofing | Acceso a cuenta ajena | Hash de contraseñas, tokens firmados y expiración | Prueba de login y token inválido |
-| Acceso directo a objeto | Elevación/Divulgación | Leer o cambiar tarea de otro | Comprobación de `ownerId` en cada operación | Prueba con dos cuentas |
-| Entrada malformada | Manipulación | Datos inesperados o consumo excesivo | Esquemas Zod, límite de cuerpo | Pruebas de validación |
-| Fuerza bruta | Denegación de servicio | Bloqueo o acceso por intentos repetidos | Rate limiting en autenticación | Configuración y prueba manual |
-| Secreto en repositorio | Divulgación | Firma de tokens comprometida | `.env` ignorado y Gitleaks en CI | Resultado de Gitleaks |
-| Dependencia vulnerable | Cadena de suministro | Ejecución o fuga por librería | Versionado, audit y actualización | Resultado de `npm audit` |
-
-## Actividad
-
-Añadid al menos tres filas: una amenaza a disponibilidad, una a privacidad y una a integridad. Priorizad con Impacto (1–5) × Probabilidad (1–5). Todo riesgo de 12 o más necesita tarea correctiva antes de aprobar la entrega.
+Explicad esta misma situación con vuestras palabras en `RIESGO.md`, usando [PLANTILLA_RIESGO.md](PLANTILLA_RIESGO.md). No añadáis más amenazas ni puntuaciones: lo importante es entender la relación entre riesgo, control y prueba.

@@ -11,7 +11,7 @@ Al terminar, el alumnado podrá:
 1. convertir requisitos en criterios de seguridad verificables;
 2. identificar riesgos con un modelo de amenazas ligero;
 3. implementar validación de entrada, autenticación, autorización y manejo de errores;
-4. automatizar pruebas, análisis estático, auditoría de dependencias y escaneo de secretos;
+4. ejecutar pruebas, análisis de código y auditoría de dependencias;
 5. comprobar automáticamente una entrega con GitHub Actions.
 
 ## Inicio rápido
